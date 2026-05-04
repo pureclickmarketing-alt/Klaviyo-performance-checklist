@@ -7,87 +7,466 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --bg: #0a0a0a; --surface: #111111; --surface2: #1a1a1a; --border: #222222; --border2: #2e2e2e;
-    --text: #f0f0f0; --muted: #666666; --muted2: #999999; --blue: #2563eb; --blue-light: #3b82f6;
-    --blue-dim: rgba(37,99,235,0.12); --green: #22c55e; --green-dim: rgba(34,197,94,0.1); --yellow: #eab308; --red: #ef4444;
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --border2: #2e2e2e;
+    --text: #f0f0f0;
+    --muted: #666666;
+    --muted2: #999999;
+    --blue: #2563eb;
+    --blue-light: #3b82f6;
+    --blue-dim: rgba(37,99,235,0.12);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.1);
+    --yellow: #eab308;
+    --red: #ef4444;
   }
+
   html { scroll-behavior: smooth; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-  .header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,10,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; }
-  .brand { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted2); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+  .brand {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
   .brand span { color: var(--blue-light); }
-  .score-header { display: flex; align-items: center; gap: 12px; }
-  .score-pill { font-family: 'DM Mono', monospace; font-size: 12px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; padding: 4px 14px; color: var(--muted2); transition: all 0.3s; }
+
+  .score-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .score-pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    color: var(--muted2);
+    transition: all 0.3s;
+  }
   .score-pill.has-score { color: var(--text); border-color: var(--blue); }
-  .grade-badge { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; background: var(--surface2); border: 1px solid var(--border2); color: var(--muted); transition: all 0.3s; }
-  .hero { padding: 5rem 2rem 3rem; max-width: 760px; margin: 0 auto; }
-  .hero-tag { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue-light); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 8px; }
-  .hero-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--blue-light); }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: 1rem; }
-  .hero h1 em { font-style: normal; color: var(--blue-light); }
-  .hero p { font-size: 16px; color: var(--muted2); max-width: 560px; line-height: 1.7; margin-bottom: 2rem; }
-  .score-overview { max-width: 760px; margin: 0 auto 2rem; padding: 0 2rem; }
-  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center; }
-  .score-number { font-family: 'DM Mono', monospace; font-size: 3rem; font-weight: 500; line-height: 1; color: var(--text); transition: color 0.3s; }
-  .score-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
-  .score-bar-wrap { margin-top: 1rem; height: 4px; background: var(--border2); border-radius: 100px; overflow: hidden; }
-  .score-bar { height: 100%; background: var(--blue); border-radius: 100px; width: 0%; transition: width 0.5s ease, background 0.3s; }
-  .grade-display { text-align: center; }
-  .grade-big { font-family: 'DM Mono', monospace; font-size: 4rem; font-weight: 500; line-height: 1; color: var(--muted); transition: color 0.3s; }
-  .grade-text { font-size: 11px; color: var(--muted); margin-top: 4px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
-  .section-scores { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-top: 1rem; }
-  .sec-score { background: var(--surface2); border-radius: 10px; padding: 10px 12px; border: 1px solid var(--border); }
-  .sec-score-name { font-size: 10px; color: var(--muted); font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-  .sec-score-val { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); }
-  .sec-score-bar { height: 2px; background: var(--border2); border-radius: 100px; margin-top: 6px; overflow: hidden; }
-  .sec-score-fill { height: 100%; background: var(--blue); border-radius: 100px; width: 0%; transition: width 0.4s ease; }
-  .main { max-width: 760px; margin: 0 auto; padding: 0 2rem 6rem; }
-  .section { margin-bottom: 3rem; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  .section-head { padding: 1.25rem 1.5rem; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; transition: background 0.2s; }
+
+  .grade-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--blue-light);
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--blue-light);
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--muted2);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  /* SCORE OVERVIEW */
+  .score-overview {
+    max-width: 760px;
+    margin: 0 auto 2rem;
+    padding: 0 2rem;
+  }
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .score-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 3rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--text);
+    transition: color 0.3s;
+  }
+  .score-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .score-bar-wrap {
+    margin-top: 1rem;
+    height: 4px;
+    background: var(--border2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .score-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.5s ease, background 0.3s;
+  }
+  .grade-display {
+    text-align: center;
+  }
+  .grade-big {
+    font-family: 'DM Mono', monospace;
+    font-size: 4rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--muted);
+    transition: color 0.3s;
+  }
+  .grade-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* SECTION SCORES */
+  .section-scores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 1rem;
+  }
+  .sec-score {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+  }
+  .sec-score-name {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .sec-score-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .sec-score-bar {
+    height: 2px;
+    background: var(--border2);
+    border-radius: 100px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .sec-score-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 3rem;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .section-head {
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
   .section-head:hover { background: var(--surface2); }
-  .section-head-left { display: flex; align-items: center; gap: 12px; }
-  .section-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
-  .section-title { font-size: 15px; font-weight: 600; color: var(--text); }
-  .section-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .section-score-tag { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted2); background: var(--surface2); border: 1px solid var(--border2); border-radius: 100px; padding: 3px 12px; white-space: nowrap; transition: all 0.3s; }
-  .section-body { background: var(--bg); }
-  .subsection { padding: 1rem 1.5rem 0.5rem; border-bottom: 1px solid var(--border); }
+  .section-head-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .section-score-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted2);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    padding: 3px 12px;
+    white-space: nowrap;
+    transition: all 0.3s;
+  }
+  .section-body {
+    background: var(--bg);
+  }
+
+  /* SUBSECTION */
+  .subsection {
+    padding: 1rem 1.5rem 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
   .subsection:last-child { border-bottom: none; }
-  .subsection-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--blue-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
-  .check-item { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; transition: background 0.15s; border-radius: 6px; padding: 10px 8px; margin: 0 -8px; border-bottom: 1px solid var(--border); }
+  .subsection-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--blue-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+  }
+
+  /* CHECKBOX ITEM */
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    border-radius: 6px;
+    padding: 10px 8px;
+    margin: 0 -8px;
+  }
   .check-item:last-child { border-bottom: none; }
   .check-item:hover { background: var(--surface2); }
   .check-item.checked { background: var(--green-dim); }
-  .checkbox { width: 20px; height: 20px; border: 1.5px solid var(--border2); border-radius: 5px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: var(--surface); }
-  .check-item.checked .checkbox { background: var(--green); border-color: var(--green); }
-  .checkbox svg { opacity: 0; transform: scale(0.5); transition: all 0.2s; }
-  .check-item.checked .checkbox svg { opacity: 1; transform: scale(1); }
+
+  .checkbox {
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--border2);
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    background: var(--surface);
+  }
+  .check-item.checked .checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .checkbox svg {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.2s;
+  }
+  .check-item.checked .checkbox svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   .check-content { flex: 1; }
-  .check-text { font-size: 13px; color: var(--text); line-height: 1.5; transition: color 0.2s; }
+  .check-text {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
   .check-item.checked .check-text { color: var(--muted2); }
-  .check-note { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
-  .check-pts { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); white-space: nowrap; padding-top: 2px; transition: color 0.2s; }
+  .check-note {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .check-pts {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 2px;
+    transition: color 0.2s;
+  }
   .check-item.checked .check-pts { color: var(--green); }
-  .grade-table { margin: 2rem 0 0; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; background: var(--surface); }
-  .grade-table-head { padding: 1rem 1.5rem; background: var(--surface2); border-bottom: 1px solid var(--border); }
-  .grade-table-head h3 { font-size: 14px; font-weight: 600; color: var(--text); }
-  .grade-row { display: grid; grid-template-columns: 60px 50px 1fr; padding: 12px 1.5rem; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; gap: 12px; }
+
+  /* GRADING TABLE */
+  .grade-table {
+    margin: 2rem 0 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .grade-table-head {
+    padding: 1rem 1.5rem;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  .grade-table-head h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .grade-row {
+    display: grid;
+    grid-template-columns: 60px 50px 1fr;
+    padding: 12px 1.5rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: center;
+    gap: 12px;
+  }
   .grade-row:last-child { border-bottom: none; }
   .grade-row .range { font-family: 'DM Mono', monospace; color: var(--muted2); font-size: 12px; }
   .grade-letter { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; }
   .grade-row .desc { color: var(--muted2); font-size: 12px; }
-  .cta-box { margin-top: 2rem; background: var(--blue-dim); border: 1px solid var(--blue); border-radius: 16px; padding: 2rem; text-align: center; }
+
+  /* CTA */
+  .cta-box {
+    margin-top: 2rem;
+    background: var(--blue-dim);
+    border: 1px solid var(--blue);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
   .cta-box h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
   .cta-box p { font-size: 13px; color: var(--muted2); margin-bottom: 1.5rem; line-height: 1.6; }
-  .cta-btn { display: inline-block; background: var(--blue); color: white; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; padding: 12px 28px; border-radius: 10px; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.15s; }
+  .cta-btn {
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 28px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
   .cta-btn:hover { background: var(--blue-light); transform: translateY(-1px); }
-  .collapse-arrow { width: 20px; height: 20px; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; }
+
+  /* COLLAPSE ARROW */
+  .collapse-arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--muted);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
   .section.collapsed .collapse-arrow { transform: rotate(-90deg); }
+  .section-body { display: block; }
   .section.collapsed .section-body { display: none; }
+
+  @media (max-width: 600px) {
+    .hero { padding: 3rem 1.25rem 2rem; }
+    .score-overview, .main { padding-left: 1.25rem; padding-right: 1.25rem; }
+    .section-scores { grid-template-columns: repeat(2, 1fr); }
+    .score-card { grid-template-columns: 1fr; }
+    .grade-display { display: none; }
+    .header { padding: 0 1.25rem; }
+  }
 </style>
 </head>
 <body>
+
 <header class="header">
   <div class="brand"><span>Pure Click</span> Marketing</div>
   <div class="score-header">
@@ -95,11 +474,13 @@
     <div class="grade-badge" id="headerGrade">-</div>
   </div>
 </header>
+
 <section class="hero">
   <div class="hero-tag">Free Checklist</div>
   <h1>The Klaviyo Email & SMS<br><em>Performance Checklist</em></h1>
   <p>Grade your current setup and find out exactly what is leaving revenue on the table. Check off every item you have in place and your score updates in real time.</p>
 </section>
+
 <div class="score-overview">
   <div class="score-card">
     <div>
@@ -117,177 +498,485 @@
     </div>
   </div>
 </div>
+
 <main class="main" id="main"></main>
+
 <script>
 const sections = [
-  { id:'s1', num:'01', title:'Email Flows', subtitle:'Your automated revenue engine', subsections:[
-    { title:'Welcome Flow', items:[
-      {text:'Welcome flow is live and actively sending',pts:2},
-      {text:'Welcome flow has 7 or more emails',pts:3,note:'Recommended minimum: 7-8 emails. Most brands underinvest here and miss first-purchase revenue.'},
-      {text:'First email sends immediately after signup',pts:1},
-      {text:'Flow includes a discount or incentive to drive first purchase',pts:1},
-      {text:'Flow introduces brand story and builds trust beyond just selling',pts:1},
-      {text:'Subject lines are varied and not all promotional',pts:1},
-      {text:'Flow is split based on whether subscriber purchased',pts:2,note:'Buyers should exit the welcome flow or receive a different sequence entirely.'},
-    ]},
-    { title:'Abandoned Cart & Checkout Flow', items:[
-      {text:'Abandoned cart and checkout flow is live',pts:2},
-      {text:'Flow has 5 or more emails',pts:3,note:'Recommended: 5-6 emails. Many brands stop at 2-3 and miss late recoveries.'},
-      {text:'First email sends within 1 hour of abandonment',pts:2},
-      {text:'Flow uses dynamic product blocks showing the abandoned items',pts:2},
-      {text:'At least one email includes a discount or urgency element',pts:1},
-      {text:'Flow excludes people who completed their purchase',pts:1},
-    ]},
-    { title:'Browse Abandonment Flow', items:[
-      {text:'Browse abandonment flow is live',pts:2},
-      {text:'Flow has at least 1 email, ideally 2-3',pts:2,note:'Recommended: 1-3 emails. Lower intent than cart abandonment so it does not need to be as long.'},
-      {text:'Flow only triggers for non-purchasers',pts:1},
-      {text:'Flow shows the specific product the person browsed',pts:2},
-    ]},
-    { title:'Site Abandonment Flow', items:[
-      {text:'Site abandonment flow is live',pts:2},
-      {text:'Flow has at least 1 email',pts:1,note:'Recommended: 1 email. Lighter touch for people with no strong purchase intent.'},
-      {text:'Flow does not overlap with browse or cart abandonment triggers',pts:1},
-    ]},
-    { title:'Post Purchase Flow', items:[
-      {text:'Post purchase flow is live',pts:2},
-      {text:'Flow has at least 2 emails',pts:2,note:'Ideally 3-5 emails covering confirmation, product education, review request, and cross-sell.'},
-      {text:'Flow includes a review or UGC request',pts:2},
-      {text:'Flow includes a cross-sell or upsell email',pts:1},
-      {text:'Flow timing accounts for your product delivery window',pts:1},
-    ]},
-    { title:'Sunset Flow', items:[
-      {text:'Sunset flow is live',pts:2},
-      {text:'Flow has at least 2 emails',pts:1},
-      {text:'Flow ends with suppression or list removal for non-openers',pts:2,note:'Critical for deliverability. Keeping unengaged contacts hurts your sender reputation.'},
-      {text:'Flow triggers based on a clear engagement window (e.g. 90-180 days of inactivity)',pts:1},
-    ]},
-    { title:'Win-Back Flow', items:[
-      {text:'Win-back flow is live',pts:2},
-      {text:'Flow has at least 2 emails',pts:1},
-      {text:'Flow offers an incentive to return',pts:1},
-      {text:'Win-back targets lapsed customers separately from sunset',pts:1},
-    ]},
-  ]},
-  { id:'s2', num:'02', title:'Email Campaigns', subtitle:'Your ongoing relationship with your list', subsections:[
-    { title:'Campaign Strategy & Frequency', items:[
-      {text:'Sending at least 3 campaign emails per week',pts:4,note:'Recommended: 3-4 per week minimum. Most brands send too infrequently and miss revenue windows.'},
-      {text:'Campaigns are planned in advance with a content calendar',pts:2},
-      {text:'Campaign mix includes promotional, educational, and story-driven emails',pts:2,note:'Not every email should be a sale. Brands that mix content types see higher long-term engagement.'},
-      {text:'Subject lines are A/B tested across campaigns',pts:2},
-      {text:'Send times are optimized based on historical open data',pts:1},
-      {text:'Campaigns are segmented and not sent to your full list every time',pts:3,note:'Blasting your entire list repeatedly kills deliverability. Target engaged segments.'},
-      {text:'Campaigns are relevant to business events (launches, sales, seasons)',pts:1},
-      {text:'You track revenue attributed to each campaign in Klaviyo',pts:1},
-      {text:'You review campaign performance weekly and adjust strategy accordingly',pts:2},
-    ]},
-  ]},
-  { id:'s3', num:'03', title:'Deliverability', subtitle:'The foundation everything else is built on', subsections:[
-    { title:'Technical Setup & List Health', items:[
-      {text:'Your domain is properly authenticated (SPF, DKIM, DMARC all set up)',pts:4,note:'Non-negotiable. Check your Klaviyo sending domain setup if unsure.'},
-      {text:'You are sending from a custom sending domain, not the Klaviyo default',pts:3},
-      {text:'Your open rate is consistently above 35%',pts:2,note:'Below 35% signals deliverability or subject line issues that need fixing.'},
-      {text:'Your spam complaint rate is below 0.1%',pts:3,note:'Above 0.1% and mailbox providers will start filtering your emails to spam.'},
-      {text:'You regularly clean your list and suppress unengaged contacts',pts:2},
-      {text:'You do not send to purchased or scraped lists',pts:2},
-      {text:'You monitor your sender reputation regularly',pts:1,note:'Google Postmaster and Klaviyo\'s deliverability hub are good tools for this.'},
-      {text:'Emails avoid spam trigger words in subject lines',pts:1},
-      {text:'Your text-to-image ratio is balanced (not image-only emails)',pts:2,note:'All-image emails are a common spam trigger and fail for subscribers with images turned off.'},
-    ]},
-  ]},
-  { id:'s4', num:'04', title:'Segmentation', subtitle:'Sending the right email to the right person', subsections:[
-    { title:'List & Audience Management', items:[
-      {text:'You have a defined engaged segment (opened or clicked in last 30-90 days)',pts:3},
-      {text:'You send most campaigns to your engaged segment, not your full list',pts:3,note:'One of the most impactful things you can do for both deliverability and revenue per email.'},
-      {text:'You have segments for VIP or high-LTV customers',pts:2},
-      {text:'You have a segment for first-time buyers separate from repeat buyers',pts:2},
-      {text:'You segment based on product category or purchase behavior where relevant',pts:2},
-      {text:'You have a cold or unengaged segment treated separately',pts:1},
-      {text:'Your flows use conditional splits based on customer behavior',pts:2},
-      {text:'You do not regularly send promotional emails to people who just purchased',pts:1},
-    ]},
-  ]},
-  { id:'s5', num:'05', title:'Email Design', subtitle:'Your emails are an extension of your brand', subsections:[
-    { title:'Visual & UX Quality', items:[
-      {text:'Emails use consistent brand fonts, colors, and logo placement',pts:2},
-      {text:'Emails are mobile optimized and render correctly on all major devices',pts:3,note:'Over 60% of emails are opened on mobile. Poor mobile rendering kills conversions.'},
-      {text:'Each email has a single clear primary CTA',pts:2,note:'Multiple competing CTAs dilute clicks. One action per email performs better.'},
-      {text:'CTA buttons are large enough to tap easily on mobile',pts:1},
-      {text:'Images are compressed and load quickly',pts:1},
-      {text:'All images have alt text for accessibility and image-off rendering',pts:1},
-      {text:'Preheader text is always filled in and complements the subject line',pts:2,note:'Preheader is the second thing people see in their inbox. Most brands waste it or leave it blank.'},
-      {text:'You have a consistent email template that reflects your brand identity',pts:2},
-      {text:'Emails are tested across Gmail, Apple Mail, and Outlook before sending',pts:1},
-      {text:'Plain-text or minimal emails are occasionally used for high-priority sends',pts:1,note:'Plain text emails often feel more personal and can see higher open and reply rates.'},
-    ]},
-  ]},
-  { id:'s6', num:'06', title:'SMS Marketing', subtitle:'The most underused channel in ecommerce', subsections:[
-    { title:'SMS Flows', items:[
-      {text:'SMS is set up and active in Klaviyo',pts:2},
-      {text:'Welcome flow includes at least one SMS touchpoint',pts:2},
-      {text:'Abandoned cart flow includes at least one SMS message',pts:2,note:'SMS in the cart abandonment sequence consistently outperforms email alone.'},
-      {text:'Post purchase flow includes an SMS touchpoint',pts:1},
-      {text:'SMS messages in flows are timed to not overlap with emails',pts:1},
-    ]},
-    { title:'SMS Campaigns', items:[
-      {text:'Sending at least 1 SMS campaign per week',pts:2,note:'Recommended: 1-2 per week. More than 3 per week risks opt-outs.'},
-      {text:'SMS campaigns are used for time-sensitive offers, launches, or restocks',pts:2,note:'SMS works best for urgent, high-value messages -- not every send.'},
-      {text:'SMS campaigns are targeted to opted-in subscribers only',pts:2},
-      {text:'You are compliant with SMS regulations (opt-in consent, opt-out handling)',pts:3,note:'Non-compliance can result in significant fines. Your opt-in must be explicit.'},
-      {text:'SMS messages are concise and include a clear CTA with a link',pts:1},
-      {text:'You track SMS revenue attribution separately in Klaviyo',pts:1},
-    ]},
-  ]},
+  {
+    id: 's1',
+    num: '01',
+    title: 'Email Flows',
+    subtitle: 'Your automated revenue engine',
+    subsections: [
+      {
+        title: 'Welcome Flow',
+        items: [
+          { text: 'Welcome flow is live and actively sending', pts: 2 },
+          { text: 'Welcome flow has 7 or more emails', pts: 3, note: 'Recommended minimum: 7-8 emails. Most brands underinvest here and miss first-purchase revenue.' },
+          { text: 'First email sends immediately after signup', pts: 1 },
+          { text: 'Flow includes a discount or incentive to drive first purchase', pts: 1 },
+          { text: 'Flow introduces brand story and builds trust beyond just selling', pts: 1 },
+          { text: 'Subject lines are varied and not all promotional', pts: 1 },
+          { text: 'Flow is split based on whether subscriber purchased', pts: 2, note: 'Buyers should exit the welcome flow or receive a different sequence entirely.' },
+        ]
+      },
+      {
+        title: 'Abandoned Cart Flow',
+        items: [
+          { text: 'Abandoned cart flow is live and actively sending', pts: 2 },
+          { text: 'Flow has 5 or more emails', pts: 3, note: 'Recommended: 5-6 emails. Many brands stop at 2-3 and miss late recoveries.' },
+          { text: 'First email sends within 1 hour of cart abandonment', pts: 2 },
+          { text: 'Flow uses dynamic product blocks showing the abandoned items', pts: 2 },
+          { text: 'At least one email includes a discount or urgency element', pts: 1 },
+          { text: 'Flow excludes people who completed their purchase', pts: 1 },
+        ]
+      },
+      {
+        title: 'Abandoned Checkout Flow',
+        items: [
+          { text: 'Abandoned checkout flow is live and actively sending', pts: 2, note: 'Separate from abandoned cart. Triggers when someone starts checkout but does not complete it -- higher purchase intent than cart abandonment.' },
+          { text: 'Flow has 5 or more emails', pts: 3, note: 'Build it identically to your cart flow -- same structure, same email count, just a different trigger.' },
+          { text: 'First email sends within 1 hour of checkout abandonment', pts: 2 },
+          { text: 'Flow uses dynamic product blocks showing the items being checked out', pts: 2 },
+          { text: 'At least one email includes a discount or urgency element', pts: 1 },
+          { text: 'Flow excludes people who completed their purchase', pts: 1 },
+        ]
+      },
+      {
+        title: 'Browse Abandonment Flow',
+        items: [
+          { text: 'Browse abandonment flow is live', pts: 2 },
+          { text: 'Flow has at least 1 email, ideally 2-3', pts: 2, note: 'Recommended: 1-3 emails. Lower intent than cart abandonment so it does not need to be as long.' },
+          { text: 'Flow only triggers for non-purchasers', pts: 1 },
+          { text: 'Flow shows the specific product the person browsed', pts: 2 },
+        ]
+      },
+      {
+        title: 'Site Abandonment Flow',
+        items: [
+          { text: 'Site abandonment flow is live', pts: 2 },
+          { text: 'Flow has at least 1 email', pts: 1, note: 'Recommended: 1 email. Lighter touch for people with no strong purchase intent.' },
+          { text: 'Flow does not overlap with browse or cart abandonment triggers', pts: 1 },
+        ]
+      },
+      {
+        title: 'Post Purchase Flow',
+        items: [
+          { text: 'Post purchase flow is live', pts: 2 },
+          { text: 'Flow has at least 2 emails', pts: 2, note: 'Ideally 3-5 emails covering confirmation, product education, review request, and cross-sell.' },
+          { text: 'Flow includes a review or UGC request', pts: 2 },
+          { text: 'Flow includes a cross-sell or upsell email', pts: 1 },
+          { text: 'Flow timing accounts for your product delivery window', pts: 1 },
+        ]
+      },
+      {
+        title: 'Sunset Flow',
+        items: [
+          { text: 'Sunset flow is live', pts: 2 },
+          { text: 'Flow has at least 2 emails', pts: 1 },
+          { text: 'Flow ends with suppression or list removal for non-openers', pts: 2, note: 'Critical for deliverability. Keeping unengaged contacts hurts your sender reputation.' },
+          { text: 'Flow triggers based on a clear engagement window (e.g. 90-180 days of inactivity)', pts: 1 },
+        ]
+      },
+      {
+        title: 'Win-Back Flow',
+        items: [
+          { text: 'Win-back flow is live', pts: 2 },
+          { text: 'Flow has at least 2 emails', pts: 1 },
+          { text: 'Flow offers an incentive to return', pts: 1 },
+          { text: 'Win-back targets lapsed customers separately from sunset', pts: 1 },
+        ]
+      },
+    ]
+  },
+  {
+    id: 's2',
+    num: '02',
+    title: 'Email Campaigns',
+    subtitle: 'Your ongoing relationship with your list',
+    subsections: [
+      {
+        title: 'Campaign Strategy & Frequency',
+        items: [
+          { text: 'Sending at least 3 campaign emails per week', pts: 4, note: 'Recommended: 3-4 per week minimum. Most brands send too infrequently and miss revenue windows.' },
+          { text: 'Campaigns are planned in advance with a content calendar', pts: 2 },
+          { text: 'Campaign mix includes promotional, educational, and story-driven emails', pts: 2, note: 'Not every email should be a sale. Brands that mix content types see higher long-term engagement.' },
+          { text: 'Subject lines are A/B tested across campaigns', pts: 2 },
+          { text: 'Send times are optimized based on historical open data', pts: 1 },
+          { text: 'Campaigns are segmented and not sent to your full list every time', pts: 3, note: 'Blasting your entire list repeatedly kills deliverability. Target engaged segments.' },
+          { text: 'Campaigns are relevant to business events (launches, sales, seasons)', pts: 1 },
+          { text: 'You track revenue attributed to each campaign in Klaviyo', pts: 1 },
+          { text: 'You review campaign performance weekly and adjust strategy accordingly', pts: 2 },
+        ]
+      }
+    ]
+  },
+  {
+    id: 's3',
+    num: '03',
+    title: 'Deliverability',
+    subtitle: 'The foundation everything else is built on',
+    subsections: [
+      {
+        title: 'Technical Setup & List Health',
+        items: [
+          { text: 'Your domain is properly authenticated (SPF, DKIM, DMARC all set up)', pts: 4, note: 'Non-negotiable. Check your Klaviyo sending domain setup if unsure.' },
+          { text: 'You are sending from a custom sending domain, not the Klaviyo default', pts: 3 },
+          { text: 'Your open rate is consistently above 35%', pts: 2, note: 'Below 35% signals deliverability or subject line issues that need fixing.' },
+          { text: 'Your spam complaint rate is below 0.1%', pts: 3, note: 'Above 0.1% and mailbox providers will start filtering your emails to spam.' },
+          { text: 'You regularly clean your list and suppress unengaged contacts', pts: 2 },
+          { text: 'You do not send to purchased or scraped lists', pts: 2 },
+          { text: 'You monitor your sender reputation regularly', pts: 1, note: 'Google Postmaster and Klaviyo\'s deliverability hub are good tools for this.' },
+          { text: 'Emails avoid spam trigger words in subject lines', pts: 1 },
+          { text: 'Your text-to-image ratio is balanced (not image-only emails)', pts: 2, note: 'All-image emails are a common spam trigger and fail for subscribers with images turned off.' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 's4',
+    num: '04',
+    title: 'Segmentation',
+    subtitle: 'Sending the right email to the right person',
+    subsections: [
+      {
+        title: 'List & Audience Management',
+        items: [
+          { text: 'You have a defined engaged segment (opened or clicked in last 30-90 days)', pts: 3 },
+          { text: 'You send most campaigns to your engaged segment, not your full list', pts: 3, note: 'One of the most impactful things you can do for both deliverability and revenue per email.' },
+          { text: 'You have segments for VIP or high-LTV customers', pts: 2 },
+          { text: 'You have a segment for first-time buyers separate from repeat buyers', pts: 2 },
+          { text: 'You segment based on product category or purchase behavior where relevant', pts: 2 },
+          { text: 'You have a cold or unengaged segment treated separately', pts: 1 },
+          { text: 'Your flows use conditional splits based on customer behavior', pts: 2 },
+          { text: 'You do not regularly send promotional emails to people who just purchased', pts: 1 },
+        ]
+      }
+    ]
+  },
+  {
+    id: 's5',
+    num: '05',
+    title: 'Email Design',
+    subtitle: 'Your emails are an extension of your brand',
+    subsections: [
+      {
+        title: 'Visual & UX Quality',
+        items: [
+          { text: 'Emails use consistent brand fonts, colors, and logo placement', pts: 2 },
+          { text: 'Emails are mobile optimized and render correctly on all major devices', pts: 3, note: 'Over 60% of emails are opened on mobile. Poor mobile rendering kills conversions.' },
+          { text: 'Each email has a single clear primary CTA', pts: 2, note: 'Multiple competing CTAs dilute clicks. One action per email performs better.' },
+          { text: 'CTA buttons are large enough to tap easily on mobile', pts: 1 },
+          { text: 'Images are compressed and load quickly', pts: 1 },
+          { text: 'All images have alt text for accessibility and image-off rendering', pts: 1 },
+          { text: 'Preheader text is always filled in and complements the subject line', pts: 2, note: 'Preheader is the second thing people see in their inbox. Most brands waste it or leave it blank.' },
+          { text: 'You have a consistent email template that reflects your brand identity', pts: 2 },
+          { text: 'Emails are tested across Gmail, Apple Mail, and Outlook before sending', pts: 1 },
+          { text: 'Plain-text or minimal emails are occasionally used for high-priority sends', pts: 1, note: 'Plain text emails often feel more personal and can see higher open and reply rates.' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 's6',
+    num: '06',
+    title: 'SMS Marketing',
+    subtitle: 'The most underused channel in ecommerce',
+    subsections: [
+      {
+        title: 'SMS Flows',
+        items: [
+          { text: 'SMS is set up and active in Klaviyo', pts: 2 },
+          { text: 'Welcome flow includes at least one SMS touchpoint', pts: 2 },
+          { text: 'Abandoned cart flow includes at least one SMS message', pts: 2, note: 'SMS in the cart abandonment sequence consistently outperforms email alone.' },
+          { text: 'Post purchase flow includes an SMS touchpoint', pts: 1 },
+          { text: 'SMS messages in flows are timed to not overlap with emails', pts: 1 },
+        ]
+      },
+      {
+        title: 'SMS Campaigns',
+        items: [
+          { text: 'Sending at least 1 SMS campaign per week', pts: 2, note: 'Recommended: 1-2 per week. More than 3 per week risks opt-outs.' },
+          { text: 'SMS campaigns are used for time-sensitive offers, launches, or restocks', pts: 2, note: 'SMS works best for urgent, high-value messages -- not every send.' },
+          { text: 'SMS campaigns are targeted to opted-in subscribers only', pts: 2 },
+          { text: 'You are compliant with SMS regulations (opt-in consent, opt-out handling)', pts: 3, note: 'Non-compliance can result in significant fines. Your opt-in must be explicit.' },
+          { text: 'SMS messages are concise and include a clear CTA with a link', pts: 1 },
+          { text: 'You track SMS revenue attribution separately in Klaviyo', pts: 1 },
+        ]
+      }
+    ]
+  }
 ];
-const maxTotal=141;
-const state={};
-sections.forEach(s=>{state[s.id]={};});
-function getMaxForSection(sec){return sec.subsections.reduce((a,sub)=>a+sub.items.reduce((b,item)=>b+item.pts,0),0);}
-function getScoreForSection(sec){return sec.subsections.reduce((a,sub)=>a+sub.items.reduce((b,item,idx)=>b+(state[sec.id][sub.title+idx]?item.pts:0),0),0);}
-function getTotalScore(){return sections.reduce((a,sec)=>a+getScoreForSection(sec),0);}
-function getGrade(score){const pct=(score/maxTotal)*100;if(pct>=85)return{letter:'A',text:'Dialed in',color:'#22c55e'};if(pct>=70)return{letter:'B',text:'Solid foundation',color:'#84cc16'};if(pct>=50)return{letter:'C',text:'Leaving money behind',color:'#eab308'};return{letter:'D',text:'Significant gaps',color:'#ef4444'};}
-function updateScores(){
-  const total=getTotalScore();const pct=(total/maxTotal)*100;const grade=total>0?getGrade(total):null;
-  document.getElementById('totalScore').textContent=total;
-  document.getElementById('totalBar').style.width=pct+'%';
-  document.getElementById('totalBar').style.background=grade?grade.color:'var(--blue)';
-  document.getElementById('headerScore').textContent=`${total} / ${maxTotal} pts`;
-  document.getElementById('headerScore').classList.toggle('has-score',total>0);
-  const gradeBig=document.getElementById('gradeBig');const gradeText=document.getElementById('gradeText');const headerGrade=document.getElementById('headerGrade');
-  if(grade){gradeBig.textContent=grade.letter;gradeBig.style.color=grade.color;gradeText.textContent=grade.text;headerGrade.textContent=grade.letter;headerGrade.style.color=grade.color;headerGrade.style.borderColor=grade.color;}
-  else{gradeBig.textContent='-';gradeBig.style.color='var(--muted)';gradeText.textContent='Your grade';headerGrade.textContent='-';headerGrade.style.color='var(--muted)';headerGrade.style.borderColor='var(--border2)';}
-  sections.forEach(sec=>{const s=getScoreForSection(sec);const m=getMaxForSection(sec);const el=document.getElementById('sec_'+sec.id);if(el){el.querySelector('.sec-score-val').textContent=`${s} / ${m}`;el.querySelector('.sec-score-fill').style.width=(s/m*100)+'%';}const tag=document.getElementById('tag_'+sec.id);if(tag)tag.textContent=`${s} / ${m} pts`;});
+
+const maxTotal = 153;
+const state = {};
+sections.forEach(s => { state[s.id] = {}; });
+
+function getMaxForSection(sec) {
+  return sec.subsections.reduce((a, sub) => a + sub.items.reduce((b, item) => b + item.pts, 0), 0);
 }
-function buildSectionScores(){const container=document.getElementById('sectionScores');sections.forEach(sec=>{const m=getMaxForSection(sec);const div=document.createElement('div');div.className='sec-score';div.id='sec_'+sec.id;div.innerHTML=`<div class="sec-score-name">${sec.title}</div><div class="sec-score-val">0 / ${m}</div><div class="sec-score-bar"><div class="sec-score-fill"></div></div>`;container.appendChild(div);});}
-function buildChecklist(){
-  const main=document.getElementById('main');
-  sections.forEach(sec=>{
-    const maxSec=getMaxForSection(sec);const sectionEl=document.createElement('div');sectionEl.className='section';sectionEl.id='section_'+sec.id;
-    const head=document.createElement('div');head.className='section-head';
-    head.innerHTML=`<div class="section-head-left"><div><div class="section-num">Section ${sec.num}</div><div class="section-title">${sec.title}</div><div class="section-subtitle">${sec.subtitle}</div></div></div><div style="display:flex;align-items:center;gap:10px;"><div class="section-score-tag" id="tag_${sec.id}">0 / ${maxSec} pts</div><svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>`;
-    head.addEventListener('click',()=>sectionEl.classList.toggle('collapsed'));
-    const body=document.createElement('div');body.className='section-body';
-    sec.subsections.forEach(sub=>{
-      const subEl=document.createElement('div');subEl.className='subsection';
-      const subTitle=document.createElement('div');subTitle.className='subsection-title';subTitle.textContent=sub.title;subEl.appendChild(subTitle);
-      sub.items.forEach((item,idx)=>{
-        const key=sub.title+idx;const itemEl=document.createElement('div');itemEl.className='check-item';
-        itemEl.innerHTML=`<div class="checkbox"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"></polyline></svg></div><div class="check-content"><div class="check-text">${item.text}</div>${item.note?`<div class="check-note">${item.note}</div>`:''}</div><div class="check-pts">+${item.pts} pt${item.pts>1?'s':''}</div>`;
-        itemEl.addEventListener('click',()=>{state[sec.id][key]=!state[sec.id][key];itemEl.classList.toggle('checked',state[sec.id][key]);updateScores();});
+
+function getScoreForSection(sec) {
+  return sec.subsections.reduce((a, sub) => {
+    return a + sub.items.reduce((b, item, idx) => {
+      return b + (state[sec.id][sub.title + idx] ? item.pts : 0);
+    }, 0);
+  }, 0);
+}
+
+function getTotalScore() {
+  return sections.reduce((a, sec) => a + getScoreForSection(sec), 0);
+}
+
+function getGrade(score) {
+  const pct = (score / maxTotal) * 100;
+  if (pct >= 85) return { letter: 'A', text: 'Dialed in', color: '#22c55e' };
+  if (pct >= 70) return { letter: 'B', text: 'Solid foundation', color: '#84cc16' };
+  if (pct >= 50) return { letter: 'C', text: 'Leaving money behind', color: '#eab308' };
+  return { letter: 'D', text: 'Significant gaps', color: '#ef4444' };
+}
+
+function updateScores() {
+  const total = getTotalScore();
+  const pct = (total / maxTotal) * 100;
+  const grade = getTotalScore() > 0 ? getGrade(total) : null;
+
+  document.getElementById('totalScore').textContent = total;
+  document.getElementById('totalBar').style.width = pct + '%';
+  document.getElementById('totalBar').style.background = grade ? grade.color : 'var(--blue)';
+  document.getElementById('headerScore').textContent = `${total} / ${maxTotal} pts`;
+  document.getElementById('headerScore').classList.toggle('has-score', total > 0);
+
+  const gradeBig = document.getElementById('gradeBig');
+  const gradeText = document.getElementById('gradeText');
+  const headerGrade = document.getElementById('headerGrade');
+
+  if (grade) {
+    gradeBig.textContent = grade.letter;
+    gradeBig.style.color = grade.color;
+    gradeText.textContent = grade.text;
+    headerGrade.textContent = grade.letter;
+    headerGrade.style.color = grade.color;
+    headerGrade.style.borderColor = grade.color;
+  } else {
+    gradeBig.textContent = '-';
+    gradeBig.style.color = 'var(--muted)';
+    gradeText.textContent = 'Your grade';
+    headerGrade.textContent = '-';
+    headerGrade.style.color = 'var(--muted)';
+    headerGrade.style.borderColor = 'var(--border2)';
+  }
+
+  sections.forEach(sec => {
+    const s = getScoreForSection(sec);
+    const m = getMaxForSection(sec);
+    const el = document.getElementById('sec_' + sec.id);
+    if (el) {
+      el.querySelector('.sec-score-val').textContent = `${s} / ${m}`;
+      el.querySelector('.sec-score-fill').style.width = (s / m * 100) + '%';
+    }
+    const tag = document.getElementById('tag_' + sec.id);
+    if (tag) tag.textContent = `${s} / ${m} pts`;
+  });
+}
+
+function buildSectionScores() {
+  const container = document.getElementById('sectionScores');
+  sections.forEach(sec => {
+    const m = getMaxForSection(sec);
+    const div = document.createElement('div');
+    div.className = 'sec-score';
+    div.id = 'sec_' + sec.id;
+    div.innerHTML = `
+      <div class="sec-score-name">${sec.title}</div>
+      <div class="sec-score-val">0 / ${m}</div>
+      <div class="sec-score-bar"><div class="sec-score-fill"></div></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function buildChecklist() {
+  const main = document.getElementById('main');
+
+  sections.forEach(sec => {
+    const maxSec = getMaxForSection(sec);
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'section';
+    sectionEl.id = 'section_' + sec.id;
+
+    const head = document.createElement('div');
+    head.className = 'section-head';
+    head.innerHTML = `
+      <div class="section-head-left">
+        <div>
+          <div class="section-num">Section ${sec.num}</div>
+          <div class="section-title">${sec.title}</div>
+          <div class="section-subtitle">${sec.subtitle}</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="section-score-tag" id="tag_${sec.id}">0 / ${maxSec} pts</div>
+        <svg class="collapse-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    `;
+    head.addEventListener('click', () => {
+      sectionEl.classList.toggle('collapsed');
+    });
+
+    const body = document.createElement('div');
+    body.className = 'section-body';
+
+    sec.subsections.forEach(sub => {
+      const subEl = document.createElement('div');
+      subEl.className = 'subsection';
+      const subTitle = document.createElement('div');
+      subTitle.className = 'subsection-title';
+      subTitle.textContent = sub.title;
+      subEl.appendChild(subTitle);
+
+      sub.items.forEach((item, idx) => {
+        const key = sub.title + idx;
+        const itemEl = document.createElement('div');
+        itemEl.className = 'check-item';
+        itemEl.innerHTML = `
+          <div class="checkbox">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="2 6 5 9 10 3"></polyline>
+            </svg>
+          </div>
+          <div class="check-content">
+            <div class="check-text">${item.text}</div>
+            ${item.note ? `<div class="check-note">${item.note}</div>` : ''}
+          </div>
+          <div class="check-pts">+${item.pts} pt${item.pts > 1 ? 's' : ''}</div>
+        `;
+        itemEl.addEventListener('click', () => {
+          state[sec.id][key] = !state[sec.id][key];
+          itemEl.classList.toggle('checked', state[sec.id][key]);
+          updateScores();
+        });
         subEl.appendChild(itemEl);
       });
+
       body.appendChild(subEl);
     });
-    sectionEl.appendChild(head);sectionEl.appendChild(body);main.appendChild(sectionEl);
+
+    sectionEl.appendChild(head);
+    sectionEl.appendChild(body);
+    main.appendChild(sectionEl);
   });
-  const gradeTable=document.createElement('div');gradeTable.className='grade-table';
-  gradeTable.innerHTML=`<div class="grade-table-head"><h3>Grading guide</h3></div><div class="grade-row"><span class="range">85-100%</span><span class="grade-letter" style="color:#22c55e">A</span><span class="desc">Your setup is dialed in. You are capturing most of the revenue available.</span></div><div class="grade-row"><span class="range">70-84%</span><span class="grade-letter" style="color:#84cc16">B</span><span class="desc">Solid foundation but there are gaps worth fixing soon.</span></div><div class="grade-row"><span class="range">50-69%</span><span class="grade-letter" style="color:#eab308">C</span><span class="desc">Your system is working but leaving a lot of money on the table.</span></div><div class="grade-row"><span class="range">Below 50%</span><span class="grade-letter" style="color:#ef4444">D</span><span class="desc">Significant gaps. A proper setup could meaningfully change your revenue.</span></div>`;
+
+  // Grading guide
+  const gradeTable = document.createElement('div');
+  gradeTable.className = 'grade-table';
+  gradeTable.innerHTML = `
+    <div class="grade-table-head"><h3>Grading guide</h3></div>
+    <div class="grade-row"><span class="range">85-100%</span><span class="grade-letter" style="color:#22c55e">A</span><span class="desc">Your setup is dialed in. You are capturing most of the revenue available.</span></div>
+    <div class="grade-row"><span class="range">70-84%</span><span class="grade-letter" style="color:#84cc16">B</span><span class="desc">Solid foundation but there are gaps worth fixing soon.</span></div>
+    <div class="grade-row"><span class="range">50-69%</span><span class="grade-letter" style="color:#eab308">C</span><span class="desc">Your system is working but leaving a lot of money on the table.</span></div>
+    <div class="grade-row"><span class="range">Below 50%</span><span class="grade-letter" style="color:#ef4444">D</span><span class="desc">Significant gaps. A proper setup could meaningfully change your revenue.</span></div>
+  `;
   main.appendChild(gradeTable);
-  const cta=document.createElement('div');cta.className='cta-box';
-  cta.innerHTML=`<h3>Want a second set of eyes?</h3><p>Pure Click Marketing offers a free Klaviyo audit. We will review your account and tell you exactly what to fix and in what order.</p><a href="https://calendly.com/pureclickmarketing-v7tj/consultation-call" target="_blank" class="cta-btn">Book a free audit</a>`;
+
+  // CTA
+  // Bottom summary section
+  const summary = document.createElement('div');
+  summary.style.cssText = 'margin:2rem 0;border:1px solid var(--border);border-radius:16px;overflow:hidden;background:var(--surface);';
+  const summaryHead = document.createElement('div');
+  summaryHead.style.cssText = 'padding:1rem 1.5rem;background:var(--surface2);border-bottom:1px solid var(--border);';
+  summaryHead.innerHTML = '<h3 style="font-size:14px;font-weight:600;color:var(--text);">Your results by section</h3><p style="font-size:12px;color:var(--muted);margin-top:4px;">See where your setup is strongest and where to focus next.</p>';
+  summary.appendChild(summaryHead);
+  const summaryGrid = document.createElement('div');
+  summaryGrid.style.cssText = 'padding:1.25rem;display:flex;flex-direction:column;gap:12px;';
+  summaryGrid.id = 'bottomSummary';
+  summary.appendChild(summaryGrid);
+  main.appendChild(summary);
+
+  function updateBottomSummary() {
+    var grid = document.getElementById('bottomSummary');
+    if (!grid) return;
+    grid.innerHTML = '';
+    sections.forEach(function(sec) {
+      var s = getScoreForSection(sec);
+      var m = getMaxForSection(sec);
+      var pct = Math.round((s / m) * 100);
+      var color = 'var(--red)';
+      if (pct >= 85) color = '#22c55e';
+      else if (pct >= 70) color = '#84cc16';
+      else if (pct >= 50) color = 'var(--yellow)';
+
+      var row = document.createElement('div');
+      row.style.cssText = 'display:flex;align-items:center;gap:12px;margin-bottom:4px;';
+
+      var label = document.createElement('div');
+      label.style.cssText = 'width:130px;flex-shrink:0;font-size:11px;color:var(--muted2);font-family:DM Mono,monospace;text-transform:uppercase;letter-spacing:0.04em;';
+      label.textContent = sec.title;
+
+      var barWrap = document.createElement('div');
+      barWrap.style.cssText = 'flex:1;height:6px;background:var(--border2);border-radius:100px;overflow:hidden;';
+      var barFill = document.createElement('div');
+      barFill.style.cssText = 'height:100%;border-radius:100px;transition:width 0.4s ease;';
+      barFill.style.width = pct + '%';
+      barFill.style.background = color;
+      barWrap.appendChild(barFill);
+
+      var scoreLabel = document.createElement('div');
+      scoreLabel.style.cssText = 'font-family:DM Mono,monospace;font-size:12px;color:var(--muted2);width:52px;text-align:right;';
+      scoreLabel.textContent = s + ' / ' + m;
+
+      var pctLabel = document.createElement('div');
+      pctLabel.style.cssText = 'font-family:DM Mono,monospace;font-size:12px;font-weight:500;width:36px;text-align:right;';
+      pctLabel.style.color = color;
+      pctLabel.textContent = pct + '%';
+
+      row.appendChild(label);
+      row.appendChild(barWrap);
+      row.appendChild(scoreLabel);
+      row.appendChild(pctLabel);
+      grid.appendChild(row);
+    });
+
+    var sorted = sections.slice().sort(function(a, b) {
+      return (getScoreForSection(a) / getMaxForSection(a)) - (getScoreForSection(b) / getMaxForSection(b));
+    });
+    var weakest = sorted[0];
+    var weakPct = Math.round((getScoreForSection(weakest) / getMaxForSection(weakest)) * 100);
+    if (weakPct < 85) {
+      var callout = document.createElement('div');
+      callout.style.cssText = 'margin-top:12px;padding:12px 14px;background:var(--blue-dim);border:1px solid var(--blue);border-radius:10px;font-size:12px;color:var(--muted2);line-height:1.6;';
+      var span = document.createElement('span');
+      span.style.cssText = 'color:var(--blue-light);font-weight:500;';
+      span.textContent = 'Biggest opportunity: ';
+      var strong = document.createElement('strong');
+      strong.style.color = 'var(--text)';
+      strong.textContent = weakest.title;
+      callout.appendChild(span);
+      callout.appendChild(strong);
+      callout.appendChild(document.createTextNode(' is your lowest scoring area at ' + weakPct + '%. Fixing gaps here will have the biggest impact on your overall score.'));
+      grid.appendChild(callout);
+    }
+  }
+
+  const _origUpdateScores = updateScores;
+  updateScores = function() { _origUpdateScores(); updateBottomSummary(); };
+
+  const cta = document.createElement('div');
+  cta.className = 'cta-box';
+  cta.innerHTML = `
+    <h3>Want a second set of eyes?</h3>
+    <p>Pure Click Marketing offers a free Klaviyo audit. We will review your account and tell you exactly what to fix and in what order.</p>
+    <a href="https://calendly.com/pureclickmarketing-v7tj/consultation-call" target="_blank" class="cta-btn">Book a free audit</a>
+  `;
   main.appendChild(cta);
 }
-buildSectionScores();buildChecklist();updateScores();
+
+buildSectionScores();
+buildChecklist();
+updateScores();
 </script>
 </body>
 </html>
